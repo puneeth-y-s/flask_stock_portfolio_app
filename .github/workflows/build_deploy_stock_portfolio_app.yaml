@@ -37,6 +37,9 @@ jobs:
     stock_portfolio_app_deploy:
         runs-on: ubuntu-latest
         steps:
+          - name: Checkout Stock Portfolio Repo
+            uses: actions/checkout@v4
+
           - name: Azure login
             uses: azure/login@v2
             with:
