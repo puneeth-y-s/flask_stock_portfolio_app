@@ -49,8 +49,8 @@ jobs:
 
           - name: Install dependencies
             run: |
-                python -m venv stockportfoliovenv
-                source stockportfoliovenv/bin/activate
+                python -m venv antenv
+                source antenv/bin/activate
                 pip install -r requirements.txt
 
           - name: Prepare Deployment Package
