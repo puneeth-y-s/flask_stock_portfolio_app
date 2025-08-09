@@ -3,3 +3,6 @@ instance/*.cfg
 instance/*.db
 instance/*.log
 instance/*.log*
+venv/
+.env/
+__pycache__/
