@@ -1,9 +1,15 @@
 name: "Deploy, Test, Deploy stock portfolio application"
 
-on: push
+on: 
+    workflow_dispatch:
+    push:
+
+permissions:
+    id-token: write # required for the az login
+    contents: read # required for checkout
 
 jobs:
-    build_and_test:
+    stock_portfolio_app_build_and_test:
         runs-on: ubuntu-latest
         steps:
           - name: Checkout Stock Portfolio Repo
@@ -27,6 +33,27 @@ jobs:
                 source stockportfoliovenv/bin/activate
                 python -m pytest tests/unit
                 python -m pytest tests/functional
+
+    stock_portfolio_app_deploy:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Azure login
+            uses: azure/login@v2
+            with:
+              client-id: ${{ secrets.AZURE_CLIENT_ID }}
+              subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+              tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+
+          - name: Archieve App
+            run: |
+              zip -r --quiet Application.zip .
+
+          - name: Deploy app
+            uses: azure/webapps-deploy@v3
+            with:
+              app-name: stocks-portfolio
+              package: ${{ github.workspace }}/Application.zip
+
 
 
 
