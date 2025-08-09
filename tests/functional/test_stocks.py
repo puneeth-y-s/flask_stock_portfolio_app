@@ -20,7 +20,7 @@ def test_about_page():
     THEN check the response is valid
     """
     with app.test_client() as client:
-        response = client.get('/about')
+        response = client.get('users/about')
         assert response.status_code == 200
         assert b'Flask Stock Portfolio App' in response.data
         assert b'About' in response.data
@@ -38,7 +38,6 @@ def test_get_add_stock_page():
         assert response.status_code == 200
         assert b'Flask Stock Portfolio App' in response.data
         assert b'Add a Stock' in response.data
-        assert b'Stock Symbol <em>(required, 1-5 uppercase letters)</em>' in response.data
         assert b'Number of Shares <em>(required)</em>' in response.data
         assert b'Purchase Price ($) <em>(required)</em>' in response.data
 

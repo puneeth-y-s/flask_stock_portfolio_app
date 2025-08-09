@@ -1,4 +1,4 @@
-from app import StockModel
+from project.stocks.routes import StockModel
 import pytest
 from pydantic import ValidationError
 
