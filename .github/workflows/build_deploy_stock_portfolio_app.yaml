@@ -1,0 +1,35 @@
+name: "Deploy, Test, Deploy stock portfolio application"
+
+on: push
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Checkout Stock Portfolio Repo
+            uses: actions/checkout@v4
+
+          - name: Setup Python
+            id: setup_python
+            uses: actions/setup-python@v5
+            with:
+                python-version: '3.11'
+                cache: pip
+
+          - name: Install Dependencies
+            run: |
+                python -m venv stockportfoliovenv
+                source stockportfoliovenv/bin/activate
+                pip install -r requirements.txt
+
+          - name: Run Unit and Functional Tests
+            run: |
+                source stockportfoliovenv/bin/activate
+                pyhton -m pytest tests/unit
+                pyhton -m pytest tests/functional
+
+
+
+
+
+
