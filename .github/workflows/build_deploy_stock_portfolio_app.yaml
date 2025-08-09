@@ -47,9 +47,13 @@ jobs:
               subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
               tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
-          - name: Archieve App
+          - name: Prepare Deployment Package
             run: |
-              zip -r --quiet Application.zip .
+                zip -r --quiet Application.zip . \
+                -x "*.git*" \
+                -x "__pycache__/*" \
+                -x "*.pytest_cache*" \
+                -x "*.venv/*"
 
           - name: Deploy app
             uses: azure/webapps-deploy@v3
