@@ -3,7 +3,7 @@ name: "Deploy, Test, Deploy stock portfolio application"
 on: push
 
 jobs:
-    build:
+    build_and_test:
         runs-on: ubuntu-latest
         steps:
           - name: Checkout Stock Portfolio Repo
