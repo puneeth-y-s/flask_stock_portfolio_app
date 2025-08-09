@@ -47,13 +47,15 @@ jobs:
               subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
               tenant-id: ${{ secrets.AZURE_TENANT_ID }}
 
+          - name: Install dependencies
+            run: |
+                python -m venv venv
+                source venv/bin/activate
+                pip install -r requirements.txt
+
           - name: Prepare Deployment Package
             run: |
-                zip -r --quiet Application.zip . \
-                -x "*.git*" \
-                -x "__pycache__/*" \
-                -x "*.pytest_cache*" \
-                -x "*.venv/*"
+                zip -r --quiet Application.zip .
 
           - name: Deploy app
             uses: azure/webapps-deploy@v3
