@@ -6,3 +6,5 @@ instance/*.log*
 venv/
 .env/
 __pycache__/
+.deployment/
+.vscode/
