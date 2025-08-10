@@ -23,15 +23,15 @@ jobs:
 
           - name: Install Dependencies
             run: |
-                python -m venv antenv
+                python3 -m venv antenv
                 source antenv/bin/activate
-                pip install -r requirements.txt
+                pip3 install -r requirements.txt
 
           - name: Run Unit and Functional Tests
             run: |
                 source antenv/bin/activate
-                python -m pytest tests/unit
-                python -m pytest tests/functional
+                python3 -m pytest tests/unit
+                python3 -m pytest tests/functional
 
     stock_portfolio_app_deploy:
         runs-on: ubuntu-latest
@@ -48,9 +48,9 @@ jobs:
 
           - name: Install dependencies
             run: |
-                python -m venv antenv
+                python3 -m venv antenv
                 source antenv/bin/activate
-                pip install -r requirements.txt
+                pip3 install -r requirements.txt
 
           - name: Prepare Deployment Package
             run: |
