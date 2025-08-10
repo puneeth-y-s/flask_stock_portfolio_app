@@ -10,15 +10,13 @@ app.config.from_object(config_type)
 
 
 # Logging Configuration
-file_handler = RotatingFileHandler('instance/flask-stock-portfolio.log',
-                                   maxBytes=16384,
-                                   backupCount=20)
-file_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(filename)s:%(lineno)d]')
-file_handler.setFormatter(file_formatter)
-file_handler.setLevel(logging.INFO)
-app.logger.addHandler(file_handler)
-
-app.logger.info('Starting the Flask Stock Portfolio App...')
+# file_handler = RotatingFileHandler('instance/flask-stock-portfolio.log',
+#                                    maxBytes=16384,
+#                                    backupCount=20)
+# file_formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s [in %(filename)s:%(lineno)d]')
+# file_handler.setFormatter(file_formatter)
+# file_handler.setLevel(logging.INFO)
+# app.logger.addHandler(file_handler)
 
 
 # Import the blueprints

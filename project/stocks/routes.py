@@ -17,7 +17,6 @@ class StockModel(BaseModel):
 
 @stocks_blueprint.route("/", methods=['GET'])
 def index():
-    current_app.logger.info("Calling the index() function")
     return render_template("stocks/index.html")
 
 @stocks_blueprint.route('/add_stock', methods=["GET", "POST"])
@@ -36,7 +35,6 @@ def add_stock():
             session['number_of_shares'] = stock_data.number_of_shares
             session['purchase_price']  = stock_data.purchase_price
             flash(f"Added new stock ({stock_data.stock_symbol})!", 'success')
-            current_app.logger.info(f"Added new stock ({request.form['stock_symbol']})!")
             return redirect(url_for('stocks.list_stocks'))
         except ValidationError as e:
             print(e)
