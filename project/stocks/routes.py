@@ -1,6 +1,9 @@
 from flask import render_template , request, session, url_for, redirect, flash, current_app
 from pydantic import BaseModel, field_validator, ValidationError
 from . import stocks_blueprint
+from project.db import get_db_session
+from project.models import Stock
+import click
 
 class StockModel(BaseModel):
     """Class for parsing new stock data from a form."""
@@ -31,9 +34,14 @@ def add_stock():
                 number_of_shares=request.form['number_of_shares'],
                 purchase_price=request.form['purchase_price']
             )
-            session['stock_symbol'] = stock_data.stock_symbol
-            session['number_of_shares'] = stock_data.number_of_shares
-            session['purchase_price']  = stock_data.purchase_price
+            
+            # Save the form data to the database
+            with get_db_session() as session:
+                new_stock = Stock(stock_data.stock_symbol,
+                                stock_data.number_of_shares,
+                                stock_data.purchase_price)
+                session.add(new_stock)
+                session.commit()
             flash(f"Added new stock ({stock_data.stock_symbol})!", 'success')
             return redirect(url_for('stocks.list_stocks'))
         except ValidationError as e:
@@ -43,4 +51,31 @@ def add_stock():
 
 @stocks_blueprint.route('/stocks/')
 def list_stocks():
-    return render_template('stocks/stocks.html')
+    with get_db_session() as session:
+        stocks = session.query(Stock).order_by(Stock.id).all()
+    return render_template('stocks/stocks.html', stocks=stocks)
+
+
+@stocks_blueprint.cli.command('create_default_set')
+def create_default_set():
+    """Create three new stocks and add them to the database"""
+    stock1 = Stock('HD', '25', '247.29')
+    stock2 = Stock('TWTR', '230', '31.89')
+    stock3 = Stock('DIS', '65', '118.77')
+    with get_db_session() as session:
+        session.add(stock1)
+        session.add(stock2)
+        session.add(stock3)
+        session.commit()
+
+@stocks_blueprint.cli.command('create')
+@click.argument('symbol')
+@click.argument('number_of_shares')
+@click.argument('purchase_price')
+def create(symbol, number_of_shares, purchase_price):
+    """Create a new stock and add it to the database"""
+    stock = Stock(symbol, number_of_shares, purchase_price)
+    with get_db_session() as session:
+        session.add(stock)
+        session.commit()
+    
